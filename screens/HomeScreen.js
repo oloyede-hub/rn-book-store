@@ -3,13 +3,25 @@ import axios from "axios"
 import {View, StyleSheet, Text,SafeAreaView,StatusBar, FlatList, ActivityIndicator} from 'react-native';
 import BookItem from '../components/BookItem';
 
-const HomeScreen = ({ navigation, data, isLoading, error}) => {
+const HomeScreen = ({ navigation, data, isLoading, error, searchItem}) => {
    
     const goToDetailScreen = (index) => {
         navigation.navigate("BookDetails", {index} )
     }
 
 
+    const ItemSeparatorView = () => {
+        return (
+          // Flat List Item Separator
+          <View
+            style={{
+              height: 0.5,
+              width: '100%',
+              backgroundColor: '#C8C8C8',
+            }}
+          />
+        );
+      };
 
     const Loading = () => (<View style={styles.loading}>
         {error ? error: <ActivityIndicator size={40}  testID="loading" accessibilityLabel="App is loading books" />}
@@ -20,14 +32,17 @@ const HomeScreen = ({ navigation, data, isLoading, error}) => {
             <StatusBar backgroundColor={"blue"} barStyle="light-content" />
             {isLoading ? <Loading />: (
                 <FlatList
-                data={data}
+                data={searchItem}
                 accessibilityLabel="books"
                 renderItem={({ item, index }) => (
                   <BookItem
-                  testID="book"
+                    testID="book"
                     data={item}
                     onPress={() => goToDetailScreen(index)}
+                    keyExtractor={(item, index) => index.toString()}
+                    ItemSeparatorComponent={ItemSeparatorView}
                   />
+                  
                 )}
               />
             )}

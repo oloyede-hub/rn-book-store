@@ -15,7 +15,9 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
-  const [error, setError] = useState("")
+  const [error, setError] = useState("");
+  const [text, setText] = useState("");
+  const [searchItem, setSearchItem] = useState([]);
 
 
   const getBook = async () => {
@@ -26,6 +28,7 @@ export default function App() {
         responseType: "json",
       }).then((response) => {
         setData(response.data);
+        setSearchItem(response.data)
         setLoading(!isLoading);
       })
     } catch (error) {
@@ -37,6 +40,23 @@ export default function App() {
     getBook();
   }, []);
 
+  const searchFunction = (text) => {
+    if(text) {
+      const filteredData = data.filter((item) => {
+        const itemData = item.title
+        ? item.title.toUpperCase()
+        : ''.toUpperCase();
+      const textData = text.toUpperCase();
+      return itemData.indexOf(textData) > -1;
+      })
+      setSearchItem(filteredData);
+      setText(text)
+    }else {
+      setSearchItem(data);
+      setText(text)
+    }
+  }
+
 
   return (
     <NavigationContainer>
@@ -45,10 +65,10 @@ export default function App() {
         options={{
           // headerShown: false,
           header: () => (
-            <HomeHeader />)
+            <HomeHeader searchFunction={searchFunction} text={text} />)
         }}
         >
-          {(props) => <HomeScreen error={error} isLoading={isLoading} data={data} {...props}  />}
+          {(props) => <HomeScreen  error={error} isLoading={isLoading} data={data} searchItem={searchItem} {...props}  />}
         </Stack.Screen>
         <Stack.Screen name="BookDetails"
         options={{

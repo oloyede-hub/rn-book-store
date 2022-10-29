@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import {View, StyleSheet, TouchableOpacity, Text, TextInput, useWindowDimensions} from 'react-native';
+import {View, StyleSheet, TouchableOpacity, TextInput, useWindowDimensions} from 'react-native';
 import { AntDesign} from "@expo/vector-icons"
 
-const HomeHeader = () => {
+const HomeHeader = ({searchFunction, text}) => {
     const  { width } = useWindowDimensions();
-    const [text, setText] = useState("");
+
     return (
         <View
         style={[styles.container, width]}
@@ -12,9 +12,10 @@ const HomeHeader = () => {
         <View  style={styles.wrapper}>
         <TextInput
             style={styles.input}
-            placeholder="Type here to translate!"
-            onChangeText={newText => setText(newText)}
+            onChangeText={newText => searchFunction(newText)}
             defaultValue={text}
+            underlineColorAndroid="transparent"
+            placeholder="Search Here"
         />
         <TouchableOpacity
           style={{ padding: 10 }}
