@@ -23,23 +23,28 @@ export default function App() {
   const [text, setText] = useState("");
   const [searchItem, setSearchItem] = useState([]);
 
-  const getBook = async () => {
+  const getBooks = async () => {
     const url = "https://fudap-books-api.herokuapp.com/books/";
+    
     try {
-      const response = await axios.get(url,{
-        responseType: "json",
-      })
-      setData(response.data);
-      setSearchItem(response.data);
-      setLoading(!isLoading);
-      setError(null)
-    } catch (err) {
-      setError(err)
+       await axios
+        .get(url, {
+          responseType: "json",
+        })
+        .then((response) => {
+          setData(response.data);
+          setSearchItem(response.data);
+          setError(null);
+          console.log(response.data)
+          setLoading(!isLoading);
+        });
+    } catch (error) {
+      setError(error);
     }
   };
 
   useEffect(() => {
-    getBook();
+    getBooks();
   }, []);
 
   const searchFunction = (text) => {
@@ -75,7 +80,6 @@ export default function App() {
             <HomeScreen
               error={error}
               isLoading={isLoading}
-              data={data}
               searchItem={searchItem}
               {...props}
             />
