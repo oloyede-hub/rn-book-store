@@ -12,7 +12,7 @@ const BookItem = ({ data, onPress }) => {
   const date = new Date(data.published);
 
   return (
-    <TouchableOpacity onPress={onPress}>
+    <TouchableOpacity onPress={onPress} testID="book">
       <View style={[styles.container, styles.shadow]}>
         <Image style={styles.image} source={{ uri: data.imgUrl }} />
         <View style={styles.info}>

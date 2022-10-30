@@ -24,27 +24,18 @@ export default function App() {
   const [searchItem, setSearchItem] = useState([]);
 
   const getBooks = async () => {
-    const url = "https://fudap-books-api.herokuapp.com/books/";
-    
-    try {
-       await axios
-        .get(url, {
-          responseType: "json",
-        })
-        .then((response) => {
-          setData(response.data);
-          setSearchItem(response.data);
-          setError(null);
-          console.log(response.data)
-          setLoading(!isLoading);
-        });
-    } catch (error) {
-      setError(error);
-    }
+   
   };
 
   useEffect(() => {
-    getBooks();
+    fetch('https://fudap-books-api.herokuapp.com/books')
+  .then((response) => response.json())
+  .then((data) =>{
+    setData(data);
+    setSearchItem(data);
+  })
+  .catch((error) => setError(error))
+  .finally(() => setLoading(false));
   }, []);
 
   const searchFunction = (text) => {
