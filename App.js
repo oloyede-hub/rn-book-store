@@ -19,24 +19,22 @@ const Stack = createNativeStackNavigator();
 export default function App() {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
-  const [error, setError] = useState("");
+  const [error, setError] = useState(null);
   const [text, setText] = useState("");
   const [searchItem, setSearchItem] = useState([]);
 
   const getBook = async () => {
     const url = "https://fudap-books-api.herokuapp.com/books/";
     try {
-      axios
-        .get(url, {
-          responseType: "json",
-        })
-        .then((response) => {
-          setData(response.data);
-          setSearchItem(response.data);
-          setLoading(!isLoading);
-        });
-    } catch (error) {
-      setError("Unable to load Book at the moment");
+      const response = await axios.get(url,{
+        responseType: "json",
+      })
+      setData(response.data);
+      setSearchItem(response.data);
+      setLoading(!isLoading);
+      setError(null)
+    } catch (err) {
+      setError(err)
     }
   };
 

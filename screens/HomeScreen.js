@@ -16,7 +16,7 @@ const HomeScreen = ({ navigation, data, isLoading, error, searchItem }) => {
     navigation.navigate("BookDetails", { index });
   };
 
-  const Loading = () => (
+  const Loading = ({ accessibilityLabel, testID}) => (
     <View style={styles.loading}>
       {error ? (
         error
@@ -25,8 +25,8 @@ const HomeScreen = ({ navigation, data, isLoading, error, searchItem }) => {
         <ActivityIndicator
           size={50}
           color="gray"
-          testID="loading"
-          accessibilityLabel="App is loading books"
+          testID={testID}
+          accessibilityLabel={accessibilityLabel}
         />
         <Text style={{ color: "#3a753593", fontSize: 20}}>Loading books...</Text>
         </>
@@ -38,10 +38,12 @@ const HomeScreen = ({ navigation, data, isLoading, error, searchItem }) => {
     <SafeAreaView style={styles.container}>
       <StatusBar backgroundColor={"#fff"} barStyle="dark-content" />
       {isLoading ? (
-        <Loading />
+        <Loading  testID="loading" accessibilityLabel="App is loading books" />
       ) : (
         <FlatList
           data={searchItem}
+          testID="book"
+          // accessibilityLabel="books"
           accessibilityLabel="books"
           renderItem={({ item, index }) => (
             <BookItem
